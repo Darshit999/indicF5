@@ -16,16 +16,6 @@ def load_audio_from_url(url):
         return sample_rate, audio_data
     return None, None
 
-# Load TTS model
-repo_id = "ai4bharat/IndicF5"
-model = AutoModel.from_pretrained(repo_id, trust_remote_code=True)
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print("Using device:", device)
-if device.type == "cpu":
-    print("⚠️ Running on CPU. Performance may be slower.")
-
-model = model.to(device)
-
 def synthesize_speech(text, ref_audio, ref_text):
     if ref_audio is None or ref_text.strip() == "":
         return "Error: Please provide a reference audio and its corresponding text."
@@ -140,4 +130,4 @@ with gr.Blocks() as iface:
     submit_btn.click(synthesize_speech, inputs=[text_input, ref_audio_input, ref_text_input], outputs=[output_audio])
 
 
-iface.launch()
+iface.launch(share=True)

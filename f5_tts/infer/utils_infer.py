@@ -112,7 +112,11 @@ def load_vocoder(vocoder_name="vocos", is_local=False, local_path="", device=dev
             }
             state_dict.update(encodec_parameters)
         vocoder.load_state_dict(state_dict)
-        vocoder = vocoder.eval().to_empty(device=device)
+        if isinstance(vocoder, torch.nn.Module) and hasattr(vocoder, 'parameters'):
+            if any(p.is_meta for p in vocoder.parameters()):
+                print("Vocoder has meta tensor, skipping device transfer.")
+            else:
+                vocoder = vocoder.eval().to(device)
     elif vocoder_name == "bigvgan":
         try:
             from third_party.BigVGAN import bigvgan
@@ -252,8 +256,14 @@ def load_model(
             method=ode_method,
         ),
         vocab_char_map=vocab_char_map,
-    ).to_empty(device=device)
+    )
 
+    if isinstance(model, torch.nn.Module) and hasattr(model, 'parameters'):
+            if any(p.is_meta for p in model.parameters()):
+                print("Model has meta tensor, skipping device transfer.")
+            else:
+                model = model.to(device)
+            
     dtype = torch.float32 if mel_spec_type == "bigvgan" else None
     # model = load_checkpoint(model, ckpt_path, device, dtype=dtype, use_ema=use_ema)
 
