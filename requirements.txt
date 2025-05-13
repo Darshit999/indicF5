@@ -14,8 +14,9 @@ pypinyin
 safetensors
 soundfile
 tomli
-torch==2.2.2+cu118
-torchaudio==2.2.2+cu118
+gradio
+torch>=2.0.0
+torchaudio>=2.0.0
 torchdiffeq
 tqdm>=4.65.0
 transformers
