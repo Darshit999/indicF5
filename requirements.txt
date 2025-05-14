@@ -14,7 +14,6 @@ pypinyin
 safetensors
 soundfile
 tomli
-gradio
 torch>=2.0.0
 torchaudio>=2.0.0
 torchdiffeq
@@ -24,4 +23,3 @@ transformers_stream_generator
 vocos
 wandb
 x_transformers>=1.31.14
-
