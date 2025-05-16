@@ -51,42 +51,42 @@ model = model.to(device)
 EXAMPLES = [
     {
         "label": "Anjali",
-        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/female/anjali.mp3",
+        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/female/anjali.wav",
         "ref_text": "क्या हाल है चाई का कप उठाओ और बैठ कर सुनो बातें जब इस आवाज में होंगी तो सुकून सा लगेगा"
     },
     {
         "label": "Jessica",
-        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/female/jessica.mp3",
+        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/female/jessica.mp3",
         "ref_text": "जो व्यक्ति चक्कर खा रहा होता है, वह समझता है कि दुनिया घूम रही है।"
     },
     {
         "label": "Monika",
-        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/female/monika.mp3",
+        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/female/monika.mp3",
         "ref_text": "ईलेवन लेब्स की सबसे सफल भारतिय आवाज अब हिंदी में, तो आईए कुछ बहतरीन बनाते हैं।"
     },
     {
         "label": "Muskaan",
-        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/female/muskaan.mp3",
+        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/female/muskaan.mp3",
         "ref_text": "अरे बैठो न, आराम से कहानी सुनते हैं, बातों बातों में सब समझ आ जाएगा"
     },
     {
         "label": "Kunal",
-        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/male/kunal.mp3",
+        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/male/kunal.mp3",
         "ref_text": " अगर आप उस समय मुस्कुराते हैं जब आपके आसपास कोई नहीं होता, तो आप वास्तव में इसका मतलब समझते हैं।"
     },
     {
         "label": "Neeraj",
-        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/male/neeraj.wav",
+        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/male/neeraj.wav",
         "ref_text": " भारतिय जीवन धारा में जिन ग्रंथों का महत्व पूर्ण स्थान है। उनमें पुरान भक्ती ग्रंथों के रूप में बहुत महत्व पूर्ण माने जाते हैं।"
     },
     {
         "label": "Rudra",
-        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/male/rudra.mp3",
+        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/male/rudra.mp3",
         "ref_text": " कितनी अजीब बात है कि आजकल लोगों ने किताबें पढ़ना छोड़ ही दिया है। अब किताबें अगर सुननी ही हैं, तो अच्छी आवाज में सुनो।"
     },
     {
         "label": "Viraj",
-        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/male/viraj.mp3",
+        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/male/viraj.mp3",
         "ref_text": "कुछ तो है जो छिपा हुआ है। हवा में हलकी सी गड़-गड़ा हट जैसे कोई राज खुलने वाला हो। क्या आपने वो महसूस किया?"
     },
 ]
