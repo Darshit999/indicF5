@@ -95,8 +95,15 @@ with gr.Blocks() as iface:
     gr.Markdown(
         """
         # **IndicF5**
+<<<<<<< HEAD
         **Supported languages**:  
         **Assamese, Bengali, Gujarati, Hindi, Kannada, Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu.**  
+=======
+
+        **Supported languages**:  
+        **Assamese, Bengali, Gujarati, Hindi, Kannada, Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu.**  
+        
+>>>>>>> 88f10a81f57efc7d545895510d9ab03989008903
         """
     )
     
