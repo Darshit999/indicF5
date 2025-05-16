@@ -51,7 +51,7 @@ model = model.to(device)
 EXAMPLES = [
     {
         "label": "Anjali",
-        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/female/anjali.wav",
+        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/female/anjali.mp3",
         "ref_text": "क्या हाल है चाई का कप उठाओ और बैठ कर सुनो बातें जब इस आवाज में होंगी तो सुकून सा लगेगा"
     },
     {
