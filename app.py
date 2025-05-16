@@ -50,29 +50,44 @@ model = model.to(device)
 # Example Data (Multiple Examples)
 EXAMPLES = [
     {
-        "label": "PAN_F (Happy)",
-        "audio_url": "https://github.com/AI4Bharat/IndicF5/raw/refs/heads/main/prompts/PAN_F_HAPPY_00002.wav",
-        "ref_text": "ਇੱਕ ਗ੍ਰਾਹਕ ਨੇ ਸਾਡੀ ਬੇਮਿਸਾਲ ਸੇਵਾ ਬਾਰੇ ਦਿਲੋਂਗਵਾਹੀ ਦਿੱਤੀ ਜਿਸ ਨਾਲ ਸਾਨੂੰ ਅਨੰਦ ਮਹਿਸੂਸ ਹੋਇਆ।"
+        "label": "Anjali",
+        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/female/anjali.mp3",
+        "ref_text": "क्या हाल है चाई का कप उठाओ और बैठ कर सुनो बातें जब इस आवाज में होंगी तो सुकून सा लगेगा"
     },
     {
-        "label": "TAM_F (Happy)",
-        "audio_url": "https://github.com/AI4Bharat/IndicF5/raw/refs/heads/main/prompts/TAM_F_HAPPY_00001.wav",
-        "ref_text": "நான் நெனச்ச மாதிரியே அமேசான்ல பெரிய தள்ளுபடி வந்திருக்கு..."
+        "label": "Jessica",
+        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/female/jessica.mp3",
+        "ref_text": "जो व्यक्ति चक्कर खा रहा होता है, वह समझता है कि दुनिया घूम रही है।"
     },
     {
-        "label": "MAR_F (WIKI)",
-        "audio_url": "https://github.com/AI4Bharat/IndicF5/raw/refs/heads/main/prompts/MAR_F_WIKI_00001.wav",
-        "ref_text": "दिगंतराव्दारे अंतराळ कक्षेतला कचरा चिन्हित करण्यासाठी प्रयत्न केले जात आहे."
+        "label": "Monika",
+        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/female/monika.mp3",
+        "ref_text": "ईलेवन लेब्स की सबसे सफल भारतिय आवाज अब हिंदी में, तो आईए कुछ बहतरीन बनाते हैं।"
     },
     {
-        "label": "MAR_M (WIKI)",
-        "audio_url": "https://github.com/AI4Bharat/IndicF5/raw/refs/heads/main/prompts/MAR_M_WIKI_00001.wav",
-        "ref_text": "या प्रथाला एकोणीसशे पंचातर ईसवी पासून भारतीय दंड संहिताची धारा चारशे अठ्ठावीस..."
+        "label": "Muskaan",
+        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/female/muskaan.mp3",
+        "ref_text": "अरे बैठो न, आराम से कहानी सुनते हैं, बातों बातों में सब समझ आ जाएगा"
     },
     {
-        "label": "KAN_F (Happy)",
-        "audio_url": "https://github.com/AI4Bharat/IndicF5/raw/refs/heads/main/prompts/KAN_F_HAPPY_00001.wav",
-        "ref_text": "ನಮ್‌ ಫ್ರಿಜ್ಜಲ್ಲಿ ಕೂಲಿಂಗ್‌ ಸಮಸ್ಯೆ ಆಗಿ ನಾನ್‌ ಭಾಳ ದಿನದಿಂದ ಒದ್ದಾಡ್ತಿದ್ದೆ..."
+        "label": "Kunal",
+        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/male/kunal.mp3",
+        "ref_text": " अगर आप उस समय मुस्कुराते हैं जब आपके आसपास कोई नहीं होता, तो आप वास्तव में इसका मतलब समझते हैं।"
+    },
+    {
+        "label": "Neeraj",
+        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/male/neeraj.wav",
+        "ref_text": " भारतिय जीवन धारा में जिन ग्रंथों का महत्व पूर्ण स्थान है। उनमें पुरान भक्ती ग्रंथों के रूप में बहुत महत्व पूर्ण माने जाते हैं।"
+    },
+    {
+        "label": "Rudra",
+        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/male/rudra.mp3",
+        "ref_text": " कितनी अजीब बात है कि आजकल लोगों ने किताबें पढ़ना छोड़ ही दिया है। अब किताबें अगर सुननी ही हैं, तो अच्छी आवाज में सुनो।"
+    },
+    {
+        "label": "Viraj",
+        "audio_url": "https://github.com/Darshit999/indicF5/tree/8218a8432876b86bb7d34a96bfd981d03195a9c7/voices/male/viraj.mp3",
+        "ref_text": "कुछ तो है जो छिपा हुआ है। हवा में हलकी सी गड़-गड़ा हट जैसे कोई राज खुलने वाला हो। क्या आपने वो महसूस किया?"
     },
 ]
 
@@ -95,15 +110,8 @@ with gr.Blocks() as iface:
     gr.Markdown(
         """
         # **IndicF5**
-<<<<<<< HEAD
         **Supported languages**:  
         **Assamese, Bengali, Gujarati, Hindi, Kannada, Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu.**  
-=======
-
-        **Supported languages**:  
-        **Assamese, Bengali, Gujarati, Hindi, Kannada, Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu.**  
-        
->>>>>>> 88f10a81f57efc7d545895510d9ab03989008903
         """
     )
     
