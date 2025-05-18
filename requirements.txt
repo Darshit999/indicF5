@@ -23,3 +23,5 @@ transformers_stream_generator
 vocos
 wandb
 x_transformers>=1.31.14
+gradio
+faster-whisper
