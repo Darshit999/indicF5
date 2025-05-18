@@ -7,6 +7,7 @@ import numpy as np
 import gradio as gr
 import soundfile as sf
 from transformers import AutoModel
+from faster_whisper import WhisperModel
 
 # Function to load reference audio from URL
 def load_audio_from_url(url):
@@ -16,6 +17,7 @@ def load_audio_from_url(url):
         return sample_rate, audio_data
     return None, None
 
+# Synthesize speech using IndicF5
 def synthesize_speech(text, ref_audio, ref_text):
     if ref_audio is None or ref_text.strip() == "":
         return "Error: Please provide a reference audio and its corresponding text."
@@ -39,13 +41,33 @@ def synthesize_speech(text, ref_audio, ref_text):
 
     return 24000, audio
 
+# Transcribe reference audio using Faster-Whisper
+def transcribe_ref_audio(ref_audio):
+    if ref_audio is None:
+        return "Error: Please provide a reference audio to transcribe."
+
+    if isinstance(ref_audio, tuple) and len(ref_audio) == 2:
+        sample_rate, audio_data = ref_audio
+    else:
+        return "Error: Invalid reference audio input."
+
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_audio:
+        sf.write(temp_audio.name, audio_data, samplerate=sample_rate)
+        segments, _ = whisper_model.transcribe(temp_audio.name)
+
+    transcription = " ".join([seg.text for seg in segments])
+    return transcription
 
 # Load TTS model
 repo_id = "ai4bharat/IndicF5"
 model = AutoModel.from_pretrained(repo_id, trust_remote_code=True)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print("Device", device)
 model = model.to(device)
+
+# Load Faster-Whisper transcription model
+whisper_model = WhisperModel("large-v3", device=device.type, compute_type="int8")
+
+print("Device:", device)
 
 # Example Data (Multiple Examples)
 EXAMPLES = [
@@ -156,6 +178,7 @@ with gr.Blocks() as iface:
             ref_audio_input = gr.Audio(type="numpy", label="Reference Prompt Audio")
             ref_text_input = gr.Textbox(label="Text in Reference Prompt Audio", lines=2)
             submit_btn = gr.Button("🎤 Generate Speech", variant="primary")
+            transcribe_btn = gr.Button("📝 Transcribe Reference Audio")
         
         with gr.Column():
             output_audio = gr.Audio(label="Generated Speech", type="numpy")
@@ -172,6 +195,11 @@ with gr.Blocks() as iface:
         inputs=[text_input, ref_audio_input, ref_text_input], 
         outputs=[output_audio]
     )
-
+    
+    transcribe_btn.click(
+        transcribe_ref_audio,
+        inputs=[ref_audio_input],
+        outputs=[ref_text_input]
+    )
 
 iface.launch(share=True)
