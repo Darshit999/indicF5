@@ -9,6 +9,10 @@ import soundfile as sf
 from transformers import AutoModel
 from faster_whisper import WhisperModel
 
+# Global buffer to store accepted segments
+final_audio_buffer = []
+final_sample_rate = 24000  # default sample rate for TTS output
+
 # Function to load reference audio from URL
 def load_audio_from_url(url):
     response = requests.get(url)
@@ -22,20 +26,17 @@ def synthesize_speech(text, ref_audio, ref_text):
     if ref_audio is None or ref_text.strip() == "":
         return "Error: Please provide a reference audio and its corresponding text."
     
-    # Ensure valid reference audio input
     if isinstance(ref_audio, tuple) and len(ref_audio) == 2:
         sample_rate, audio_data = ref_audio
     else:
         return "Error: Invalid reference audio input."
     
-    # Save reference audio directly without resampling
     with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_audio:
         sf.write(temp_audio.name, audio_data, samplerate=sample_rate, format='WAV')
         temp_audio.flush()
     
     audio = model(text, ref_audio_path=temp_audio.name, ref_text=ref_text)
-             
-    # Normalize output and save
+    
     if audio.dtype == np.int16:
         audio = audio.astype(np.float32) / 32768.0
 
@@ -58,18 +59,36 @@ def transcribe_ref_audio(ref_audio):
     transcription = " ".join([seg.text for seg in segments])
     return transcription
 
+# Append generated audio to final track
+def add_to_final_track(generated_audio):
+    if generated_audio is None:
+        return "Error: No generated audio to add.", None
+
+    sample_rate, audio_data = generated_audio
+    if audio_data is not None:
+        final_audio_buffer.append(audio_data)
+
+    if final_audio_buffer:
+        combined_audio = np.concatenate(final_audio_buffer)
+        return "Audio added to final track ✅", (final_sample_rate, combined_audio)
+    else:
+        return "No audio in final track.", None
+
+# Clear the final track
+def clear_final_track():
+    final_audio_buffer.clear()
+    return "Final track cleared.", None
+
 # Load TTS model
 repo_id = "ai4bharat/IndicF5"
 model = AutoModel.from_pretrained(repo_id, trust_remote_code=True)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = model.to(device)
 
-# Load Faster-Whisper transcription model
+# Load Faster-Whisper model
 whisper_model = WhisperModel("large-v3", device=device.type, compute_type="int8")
 
-print("Device:", device)
-
-# Example Data (Multiple Examples)
+# Load reference examples
 EXAMPLES = [
     {
         "label": "Anjali",
@@ -77,75 +96,13 @@ EXAMPLES = [
         "ref_text": "क्या हाल है चाई का कप उठाओ और बैठ कर सुनो बातें जब इस आवाज में होंगी तो सुकून सा लगेगा"
     },
     {
-        "label": "Anika",
-        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/female/anika.mp3",
-        "ref_text": " छोटी गुडिया ने जैसे ही जादूई दर्वाजा खोला, एक चमकदार दुनिया उसके सामने थी। उसने कहा, क्या यहां सच में बोलने वाले खरगोश हैं।"
-    },
-    {
-        "label": "Diya",
-        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/female/diya.mp3",
-        "ref_text": " जो कहानी मैं सुनाने वाली हूँ, उसकी कोई तस्वीर नहीं, कोई गवाह नहीं, सिर्फ एक डर, जो अब तक मेरे अंदर जिन्दा है।"
-    },
-    {
-        "label": "Jessica",
-        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/female/jessica.mp3",
-        "ref_text": "जो व्यक्ति चक्कर खा रहा होता है, वह समझता है कि दुनिया घूम रही है।"
-    },
-    {
-        "label": "Monika",
-        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/female/monika.mp3",
-        "ref_text": "ईलेवन लेब्स की सबसे सफल भारतिय आवाज अब हिंदी में, तो आईए कुछ बहतरीन बनाते हैं।"
-    },
-    {
-        "label": "Muskaan",
-        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/female/muskaan.mp3",
-        "ref_text": "अरे बैठो न, आराम से कहानी सुनते हैं, बातों बातों में सब समझ आ जाएगा"
-    },
-    {
-        "label": "Meher",
-        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/female/meher.mp3",
-        "ref_text": "वो दर्वाजा धीरे धीरे खुला. अंदर अंधेरा था. लेकिन अजीब ये था कि किसी ने दर्वाजा खोला नहीं था."
-    },
-    
-    {
-        "label": "Kunal",
-        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/male/kunal.mp3",
-        "ref_text": "अगर आप उस समय मुस्कुराते हैं जब आपके आसपास कोई नहीं होता, तो आप वास्तव में इसका मतलब समझते हैं।"
-    },
-    {
-        "label": "Yatin",
-        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/male/yatin.mp3",
-        "ref_text": "एक गहरा रहस्य हवा मै तैर रहा था, हर सांस के साथ करीब आता हुआ, और किसी को नही पता था की अगली पल क्या लेकर आएगा।"
-    },
-    {
-        "label": "Neeraj",
-        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/male/neeraj.wav",
-        "ref_text": "भारतिय जीवन धारा में जिन ग्रंथों का महत्व पूर्ण स्थान है। उनमें पुरान भक्ती ग्रंथों के रूप में बहुत महत्व पूर्ण माने जाते हैं।"
-    },
-    {
-        "label": "Rudra",
-        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/male/rudra.mp3",
-        "ref_text": "कितनी अजीब बात है कि आजकल लोगों ने किताबें पढ़ना छोड़ ही दिया है। अब किताबें अगर सुननी ही हैं, तो अच्छी आवाज में सुनो।"
-    },
-    {
-        "label": "Viraj",
-        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/male/viraj.mp3",
-        "ref_text": "कुछ तो है जो छिपा हुआ है। हवा में हलकी सी गड़-गड़ा हट जैसे कोई राज खुलने वाला हो। क्या आपने वो महसूस किया?"
-    },
-    {
-        "label": "Vikas",
-        "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/male/vikas.mp3",
-        "ref_text": "अरे हा, मुझे वो दिन अच्छी तरह याद है, सब लोग इतने खुश थे और माहोल भी बहोत खास था।"
-    },
-    {
         "label": "Arjun",
         "audio_url": "https://github.com/Darshit999/indicF5/raw/main/voices/male/arjun.mp3",
         "ref_text": "आपको परिवर्तन को नियम के रूप में स्वागत करना चाहिए, लेकिन अपने शासक के रूप में नहीं."
     },
+    # Add more examples if needed...
 ]
 
-
-# Preload audio
 for ex in EXAMPLES:
     sr, ad = load_audio_from_url(ex["audio_url"])
     ex["sample_rate"] = sr
@@ -153,21 +110,20 @@ for ex in EXAMPLES:
 
 SPEAKER_OPTIONS = {ex["label"]: ex for ex in EXAMPLES}
 
-# On speaker select
 def on_speaker_selected(speaker_label):
     ex = SPEAKER_OPTIONS[speaker_label]
     return (ex["sample_rate"], ex["audio_data"]), ex["ref_text"]
 
-# Define Gradio interface with layout adjustments
+# Gradio Interface
 with gr.Blocks() as iface:
     gr.Markdown(
         """
         # **IndicF5**
         **Supported languages**:  
-        **Assamese, Bengali, Gujarati, Hindi, Kannada, Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu.**  
+        Assamese, Bengali, Gujarati, Hindi, Kannada, Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu  
         """
     )
-    
+
     with gr.Row():
         with gr.Column():
             speaker_dropdown = gr.Dropdown(
@@ -179,11 +135,14 @@ with gr.Blocks() as iface:
             ref_text_input = gr.Textbox(label="Text in Reference Prompt Audio", lines=2)
             submit_btn = gr.Button("🎤 Generate Speech", variant="primary")
             transcribe_btn = gr.Button("📝 Transcribe Reference Audio")
-        
+
         with gr.Column():
             output_audio = gr.Audio(label="Generated Speech", type="numpy")
-    
-    # Event: Load only reference audio & text
+            add_btn = gr.Button("✅ Add to Final Track")
+            final_status = gr.Textbox(label="Status", interactive=False)
+            final_audio_output = gr.Audio(label="Final Track Preview", type="numpy")
+            clear_btn = gr.Button("🔄 Clear Final Track")
+
     speaker_dropdown.change(
         fn=on_speaker_selected,
         inputs=[speaker_dropdown],
@@ -191,15 +150,26 @@ with gr.Blocks() as iface:
     )
 
     submit_btn.click(
-        synthesize_speech, 
-        inputs=[text_input, ref_audio_input, ref_text_input], 
+        synthesize_speech,
+        inputs=[text_input, ref_audio_input, ref_text_input],
         outputs=[output_audio]
     )
-    
+
     transcribe_btn.click(
         transcribe_ref_audio,
         inputs=[ref_audio_input],
         outputs=[ref_text_input]
+    )
+
+    add_btn.click(
+        add_to_final_track,
+        inputs=[output_audio],
+        outputs=[final_status, final_audio_output]
+    )
+
+    clear_btn.click(
+        clear_final_track,
+        outputs=[final_status, final_audio_output]
     )
 
 iface.launch(share=True)
